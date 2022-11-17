@@ -150,8 +150,8 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-
+#模拟邮箱，没有配置好邮箱时用这个做实验，会在命令窗里显示发送的邮件内容
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 #下面用的465端口，阿里云可以用的
 EMAIL_USE_SSL = True

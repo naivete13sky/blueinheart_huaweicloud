@@ -1,6 +1,7 @@
 from django.shortcuts import render, HttpResponse
 from django.contrib.auth import authenticate, login
 from .forms import LoginForm
+from django.contrib.auth.decorators import login_required
 
 #做个试验，后面不用这个了
 def user_login(request):
@@ -29,7 +30,6 @@ def user_login(request):
 # 定义了一个参数section，可以用来追踪用户当前所在的功能板块。
 # 使用@login_required装饰器，表示被装饰的视图只有在用户登录的情况下才会被执行
 # 如果用户未登录，则会将用户重定向至Get请求附加的next参数指定的URL。这样设置之后，如果用户在未登录的情况下，无法看到首页。
-from django.contrib.auth.decorators import login_required
 @login_required
 def dashboard(request):
     return render(request, 'account/dashboard.html', {'section': 'dashboard'})
