@@ -104,11 +104,17 @@ def post_search(request):
 
             # results = Post.objects.annotate(search=SearchVector('title', 'slug', 'body'), ).filter(search=query)
 
-            search_vector = SearchVector('title', 'body')
+            # search_vector = SearchVector('title', 'body')
+
+            search_vector = SearchVector('title', weight='A') + SearchVector('body', weight='B')
             search_query = SearchQuery(query)
-            results = Post.objects.annotate(search=search_vector,
-                                            rank=SearchRank(search_vector, search_query)
-                                            ).filter(search=search_query).order_by('-rank')
+            # results = Post.objects.annotate(search=search_vector,rank=SearchRank(search_vector, search_query)).filter(search=search_query).order_by('-rank')
+
+            results = Post.objects.annotate(search=search_vector,rank=SearchRank(search_vector, search_query)).filter(rank__gte=0.3).order_by('-rank')
+            # 在上边的代码中，给title和body字段的搜索向量赋予了不同的权重。默认的权重D，C，B，A分别对应 0.1, 0.2, 0.4和1。
+            # 我们给title字段的搜索向量赋予权重1.0，给body字段的搜索向量的权重是0.4，说明文章标题的重要性要比正文更重要，
+            # 最后设置了只显示综合权重大于0.3的搜索结果。
+
 
             print('query:',query,"results:",results)
     return render(request, 'blog/post/search.html', {'query': query, "form": form, 'results': results})
