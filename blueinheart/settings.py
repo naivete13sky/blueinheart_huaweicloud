@@ -84,7 +84,7 @@ WSGI_APPLICATION = 'blueinheart.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'dms',
+        'NAME': 'blueinheart',
         # 'NAME': 'ep_develop',
         'USER': 'postgres',
         'PASSWORD': 'cc',
