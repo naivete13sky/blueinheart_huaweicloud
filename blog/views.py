@@ -1,9 +1,9 @@
-from django.db import models
 from django.shortcuts import render, get_object_or_404
-from .models import Post
+from .models import Post, Comment
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView
 from django.core.mail import send_mail
+from .forms import EmailPostForm, CommentForm
 
 def post_list(request):
     object_list = Post.published.all()
@@ -30,10 +30,27 @@ class PostListView(ListView):
 def post_detail(request, year, month, day, post):
     post = get_object_or_404(Post, slug=post, status="published", publish__year=year, publish__month=month,
                              publish__day=day)
-    return render(request, 'blog/post/detail.html', {'post': post})
+
+    # 列出文章对应的所有活动的评论
+    comments = post.comments.filter(active=True)
+    new_comment = None
+    if request.method == "POST":
+        comment_form = CommentForm(data=request.POST)
+        if comment_form.is_valid():
+            # 通过表单直接创建新数据对象，但是不要保存到数据库中
+            new_comment = comment_form.save(commit=False)
+            # 设置外键为当前文章
+            new_comment.post = post
+            # 将评论数据对象写入数据库
+            new_comment.save()
+    else:
+        comment_form = CommentForm()
 
 
-from .forms import EmailPostForm
+    return render(request, 'blog/post/detail.html', {'post': post,'comments': comments, 'new_comment': new_comment, 'comment_form': comment_form})
+
+
+
 
 def post_share(request, post_id):
     # 通过id 获取 post 对象
@@ -56,18 +73,3 @@ def post_share(request, post_id):
         form = EmailPostForm()
     return render(request, 'blog/post/share.html', {'post': post, 'form': form})
 
-
-class Comment(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
-    name = models.CharField(max_length=80)
-    email = models.EmailField()
-    body = models.TextField()
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-    active = models.BooleanField(default=True)
-
-    class Meta:
-        ordering = ("created",)
-
-    def __str__(self):
-        return 'Comment by {} on {}'.format(self.name, self.post)
