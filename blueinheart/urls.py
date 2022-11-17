@@ -37,6 +37,8 @@ urlpatterns = [
     path('account/', include('account.urls')),
 
     path('back_stage/', include('back_stage.urls')),
+    path('', include('back_stage.urls',namespace='index')),
+
 
 ]
 
