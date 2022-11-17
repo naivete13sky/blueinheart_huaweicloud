@@ -36,6 +36,8 @@ urlpatterns = [
 
     path('account/', include('account.urls')),
 
+    path('back_stage/', include('back_stage.urls')),
+
 ]
 
 # 这样设置后，Django开发服务器在DEBUG=True的情况下会提供媒体文件服务。
