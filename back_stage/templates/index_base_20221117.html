@@ -69,13 +69,19 @@
         <section id="container" class="sidebar-closed">
 
         <header class="header dark-bg">
-            <div class="toggle-nav">
-                <div class="icon-reorder tooltips" data-original-title="折叠导航" data-placement="bottom"><i class="icon_menu"></i></div>
-            </div>
+{#            <div class="toggle-nav">#}
+{#                <div class="icon-reorder tooltips" data-original-title="折叠导航" data-placement="bottom"><i class="icon_menu"></i></div>#}
+{#            </div>#}
 
             <!--logo start-->
-            <a href="{% url "back_stage:index" %}" class="logo"><span class="lite">个人主页</span></a>
+            <a href="{% url "back_stage:index" %}" class="logo"><span class="lite">主页</span></a>
+
+            <a href="{% url "blog:post_list" %}" class="logo">博客</a>
             <!--logo end-->
+
+
+
+
 
             <div class="nav search-row" id="top_menu">
                 <!--  search form start -->
@@ -91,9 +97,15 @@
                 <!--  search form end -->
             </div>
 
+
+
+
+
             <div class="top-nav notification-row">
                 <!-- notificatoin dropdown start-->
                 <ul class="nav pull-right top-menu">
+
+
 
                     <!-- task notificatoin start -->
 
