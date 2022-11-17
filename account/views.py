@@ -1,7 +1,9 @@
 from django.shortcuts import render, HttpResponse
 from django.contrib.auth import authenticate, login
-from .forms import LoginForm,UserRegistrationForm
+from .forms import LoginForm,UserRegistrationForm, UserEditForm, ProfileEditForm
 from django.contrib.auth.decorators import login_required
+from .models import Profile
+
 
 #做个试验，后面不用这个了
 def user_login(request):
@@ -47,7 +49,32 @@ def register(request):
             new_user.set_password(user_form.cleaned_data['password'])
             # 保存User对象
             new_user.save()
+
+            # 当用户注册的时候，会自动建立一个空白的用户信息关联到用户。
+            Profile.objects.create(user=new_user)
+
             return render(request, 'account/register_done.html', {'new_user': new_user})
     else:
         user_form = UserRegistrationForm()
     return render(request, 'account/register.html', {'user_form': user_form})
+
+
+
+# 还必须让用户可以编辑他们的信息
+# instance用于指定表单类实例化为某个具体的数据对象。
+# 在这个例子里，将UserEditForminstance指定为request.user表示该对象是数据库中当前登录用户那一行的数据对象，而不是一个空白的数据对象，
+# ProfileEditForm的instance属性指定为当前用户对应的Profile类中的那行数据。
+# 这里如果不指定instance参数，则变成向数据库中增加两条新记录，而不是修改原有记录。
+@login_required
+def edit(request):
+    if request.method == "POST":
+        user_form = UserEditForm(instance=request.user, data=request.POST)
+        profile_form = ProfileEditForm(instance=request.user.profile, data=request.POST, files=request.FILES)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+    else:
+        user_form = UserEditForm(instance=request.user)
+        profile_form = ProfileEditForm(instance=request.user.profile)
+
+    return render(request, 'account/edit.html', {'user_form': user_form, 'profile_form': profile_form})

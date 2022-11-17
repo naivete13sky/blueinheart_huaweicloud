@@ -1,5 +1,6 @@
 cc
 cc123456
+ccangela
 1、配置数据库。
 2、python manage.py migrate。同步数据库。
 3、python manage.py startapp blog。编辑settings.py文件，添加blog.apps.BlogConfig到INSTALLED_APPS设置中。python manage.py makemigrations blog。python manage.py migrate。
