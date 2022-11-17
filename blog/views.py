@@ -3,9 +3,10 @@ from .models import Post, Comment,MyTag
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView
 from django.core.mail import send_mail
-from .forms import EmailPostForm, CommentForm
+from .forms import EmailPostForm, CommentForm,SearchForm
 from taggit.models import Tag
 from django.db.models import Count
+from django.contrib.postgres.search import SearchVector
 
 def post_list(request,tag_slug=None):
     object_list = Post.published.all()
@@ -89,3 +90,16 @@ def post_share(request, post_id):
         form = EmailPostForm()
     return render(request, 'blog/post/share.html', {'post': post, 'form': form})
 
+
+
+def post_search(request):
+    form = SearchForm()
+    query = None
+    results = []
+    if 'query' in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            results = Post.objects.annotate(search=SearchVector('title', 'slug', 'body'), ).filter(search=query)
+            print('query:',query,"results:",results)
+    return render(request, 'blog/post/search.html', {'query': query, "form": form, 'results': results})
