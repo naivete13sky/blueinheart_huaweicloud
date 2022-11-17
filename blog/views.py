@@ -5,6 +5,7 @@ from django.views.generic import ListView
 from django.core.mail import send_mail
 from .forms import EmailPostForm, CommentForm
 from taggit.models import Tag
+from django.db.models import Count
 
 def post_list(request,tag_slug=None):
     object_list = Post.published.all()
@@ -55,8 +56,12 @@ def post_detail(request, year, month, day, post):
     else:
         comment_form = CommentForm()
 
+    # 显示相近Tag的文章列表
+    post_tags_ids = post.tags.values_list('id', flat=True)
+    similar_tags = Post.published.filter(tags__in=post_tags_ids).exclude(id=post.id)
+    similar_posts = similar_tags.annotate(same_tags=Count('tags')).order_by('-same_tags', '-publish')[:4]
 
-    return render(request, 'blog/post/detail.html', {'post': post,'comments': comments, 'new_comment': new_comment, 'comment_form': comment_form})
+    return render(request, 'blog/post/detail.html', {'post': post,'comments': comments, 'new_comment': new_comment, 'comment_form': comment_form,'similar_posts': similar_posts})
 
 
 
