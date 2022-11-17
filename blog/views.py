@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Post, Comment
+from .models import Post, Comment,MyTag
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView
 from django.core.mail import send_mail
@@ -12,7 +12,9 @@ def post_list(request,tag_slug=None):
 
     tag = None
     if tag_slug:
-        tag = get_object_or_404(Tag, slug=tag_slug)
+        # tag = get_object_or_404(Tag, slug=tag_slug)
+        # 从MyTag对应的数据库表里查询tag
+        tag = get_object_or_404(MyTag, slug=tag_slug)
         object_list = object_list.filter(tags__in=[tag])
 
 
