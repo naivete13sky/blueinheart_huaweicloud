@@ -161,3 +161,11 @@ EMAIL_HOST_USER = 'chen320821@163.com' # 帐号
 # EMAIL_HOST_PASSWORD =  'angela123.163'  # 密码
 EMAIL_HOST_PASSWORD =  'CZZLYIRGEDHOTHWA'  # 密码
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
+# 如果没有指定next参数，登录成功后重定向的URL
+LOGIN_REDIRECT_URL = 'dashboard'
+# 用户需要登录的情况下被重定向到的URL地址（例如@login_required重定向到的地址）
+LOGIN_URL = 'login'
+# 用户需要登出的时候被重定向到的URL地址
+LOGOUT_URL = 'logout'
