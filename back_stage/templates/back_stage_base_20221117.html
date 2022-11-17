@@ -9,7 +9,7 @@
     <meta name="author" content="GeeksLabs">
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href={% static "index_base_20220818/img/favicon.png" %}>
-    <title>{% block title %}个人主页{% endblock %}</title>
+    <title>{% block title %}悦谱数据管理系统{% endblock %}</title>
 
     <!-- Bootstrap CSS -->
     <link href={% static "index_base_20220818/css/bootstrap.min.css" %} rel="stylesheet">
@@ -66,7 +66,7 @@
 
 
     <!-- container section start -->
-        <section id="container" class="sidebar-closed">
+    <section id="container" class="">
 
         <header class="header dark-bg">
             <div class="toggle-nav">
@@ -74,7 +74,7 @@
             </div>
 
             <!--logo start-->
-            <a href="{% url "back_stage:index" %}" class="logo"><span class="lite">个人主页</span></a>
+            <a href="index.html" class="logo">DMS <span class="lite">管理员</span></a>
             <!--logo end-->
 
             <div class="nav search-row" id="top_menu">
@@ -117,7 +117,7 @@
 {#                                            <img alt="" src={% static "index_base_20220818/img/avatar1_small.jpg" %}>#}
                                         </span>
 
-                                        <span class="user-name">{{ request.user.first_name }}{{ request.user.last_name }}</span>
+                                        <span class="user-name">{{ request.user.last_name }}{{ request.user.first_name }}</span>
 
                                         <b class="caret"></b>
                         </a>
@@ -144,9 +144,24 @@
 
         <!--sidebar start-->
         <aside>
-            <div id="sidebar" class="nav-collapse">
+            <div id="sidebar" class="nav-collapse ">
             <!-- sidebar menu start-->
                 <ul class="sidebar-menu">
+                    <li class="active">
+                        <a class="" href={% url "back_stage:index" %}>
+                            <i class="fa fa-dashboard"></i>
+                            <span>看板</span>
+                        </a>
+                    </li>
+
+
+
+
+
+
+
+
+
                 </ul>
             <!-- sidebar menu end-->
             </div>
