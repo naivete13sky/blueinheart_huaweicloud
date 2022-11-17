@@ -33,6 +33,9 @@ SITE_ID = 1
 # Application definition
 
 INSTALLED_APPS = [
+    'account.apps.AccountConfig',
+    #这里将我们的应用放在应用列表的最前边，原因是：我们稍后会为自己的应用编写验证系统的模板，Django内置的验证系统自带了一套模板，
+    # 如此设置可以让我们的模板覆盖其他应用中的模板设置。Django按照INSTALLED_APPS中的顺序寻找模板。
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.sitemaps',
     'django.contrib.postgres',#全文搜索用
+
 
 ]
 
