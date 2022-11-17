@@ -3,6 +3,7 @@
 3、python manage.py startapp blog。编辑settings.py文件，添加blog.apps.BlogConfig到INSTALLED_APPS设置中。python manage.py makemigrations blog。python manage.py migrate。
 4、python manage.py createsuperuser。
 5、blog设置。
-6、
+6、配置邮箱。send_mail('Django mail', 'This e-mail was sent with Django.', 'chen320821@163.com', ['cheng.chen@epsemicon.com'], fail_silently=False)。
+
 
 

@@ -139,3 +139,15 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+
+#下面用的465端口，阿里云可以用的
+EMAIL_USE_SSL = True
+EMAIL_HOST = 'smtp.163.com'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'chen320821@163.com' # 帐号
+# EMAIL_HOST_PASSWORD =  'angela123.163'  # 密码
+EMAIL_HOST_PASSWORD =  'CZZLYIRGEDHOTHWA'  # 密码
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

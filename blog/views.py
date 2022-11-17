@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from .models import Post
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView
-
+from django.core.mail import send_mail
 
 def post_list(request):
     object_list = Post.published.all()
@@ -30,3 +30,27 @@ def post_detail(request, year, month, day, post):
     post = get_object_or_404(Post, slug=post, status="published", publish__year=year, publish__month=month,
                              publish__day=day)
     return render(request, 'blog/post/detail.html', {'post': post})
+
+
+from .forms import EmailPostForm
+
+def post_share(request, post_id):
+    # 通过id 获取 post 对象
+    post = get_object_or_404(Post, id=post_id, status='published')
+    sent = False
+
+    if request.method == "POST":
+        # 表单被提交
+        form = EmailPostForm(request.POST)
+        if form.is_valid():
+            # 验证表单数据
+            cd = form.cleaned_data
+            # 发送邮件......
+            post_url = request.build_absolute_uri(post.get_absolute_url())
+            subject = '{} ({}) recommends you reading "{}"'.format(cd['name'], cd['email'], post.title)
+            message = 'Read "{}" at {}\n\n{}\'s comments:{}'.format(post.title, post_url, cd['name'], cd['comments'])
+            send_mail(subject, message, 'chen320821@163.com', [cd['to']])
+            sent = True
+    else:
+        form = EmailPostForm()
+    return render(request, 'blog/post/share.html', {'post': post, 'form': form})
