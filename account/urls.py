@@ -28,4 +28,8 @@ urlpatterns = [
     # 在第一个项目中，我们提到为应用配置单独的二级路由，有助于应用的复用。现在的account应用的urls.py文件中所有配置到内置视图的URL，可以用如下一行来代替：
     path('', include('django.contrib.auth.urls')),
 
+
+
+    path('register/', views.register, name='register'),
+
 ]
