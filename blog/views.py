@@ -132,7 +132,10 @@ class PostListView(ListView):
         search_by_post_title_body = self.request.GET.get('search_by_post_title_body',False)
         if search_by_post_title_body:
             print("search_by_post_title_body:",search_by_post_title_body)
-            context['posts_page'] = Post.objects.filter(Q(title__contains=search_by_post_title_body))
+            context['posts_page'] = Post.objects.filter(
+                Q(title__contains=search_by_post_title_body) |
+                Q(body__contains=search_by_post_title_body)
+            )
         return context
 
     def post(self, request):  # ***** this method required! ******
