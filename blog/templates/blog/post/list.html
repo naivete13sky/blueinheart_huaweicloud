@@ -28,7 +28,7 @@
                                 </p>
 
                                 <p class="date">
-                                Published {{ post.publish }} by {{ post.author }}
+                                {{ post.author }}发表于 {{ post.publish }}
                                 </p>
                         {#        {{ post.body|truncatewords:30|linebreaks }}#}
                                 {{ post.body|markdown|truncatewords_html:30 }}
