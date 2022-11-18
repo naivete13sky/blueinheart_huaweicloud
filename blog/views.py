@@ -98,6 +98,7 @@ class PostListView(ListView):
         #get方式query数据
         submit_query_get = self.request.GET.get('submit_query_get',False)
         if submit_query_get:
+            print('submit_query_get:',submit_query_get)
             # 料号使用类型筛选:所有,或者对应的查询值
             query_job_file_usage_type = self.request.GET.get("query_job_file_usage_type", False)
             context['posts'] = Post.objects.all()
