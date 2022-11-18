@@ -1,6 +1,12 @@
 {% extends 'index_base_20221117.html' %}
 {% load static  %}
 {% block title %}个人主页{% endblock %}
+{% block header_menu %}
+    <a href="{% url "blog:post_list" %}" class="logo"><span class="lite">博客</span></a>
+{% endblock %}
+{% block header_dropdown %}
+
+{% endblock %}
 {% block content_header_child %}
     <li><i class="fa fa-home" aria-hidden="true"></i><a href={% url "back_stage:index" %}>看板</a></li>
     <li><a>看板</a></li>

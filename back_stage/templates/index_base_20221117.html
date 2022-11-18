@@ -127,7 +127,8 @@
 
 
                     <!-- user login dropdown start-->
-                    <li class="dropdown">
+                    {% block header_dropdown %}
+                        <li class="dropdown">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                         <span class="profile-ava">
 {#                                            <img alt="" src={% static "index_base_20220818/img/avatar1_small.jpg" %}>#}
@@ -149,6 +150,8 @@
                         </ul>
 
                     </li>
+                    {% endblock %}
+
                     <!-- user login dropdown end -->
 
                 </ul>

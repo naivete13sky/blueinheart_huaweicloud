@@ -2,6 +2,9 @@
 {% load static  %}
 {% load blog_tags %}
 {% block title %}博客{% endblock %}
+{% block header_menu %}
+    <a href="{% url "back_stage:index" %}" class="logo"><span class="lite">主页</span></a>
+{% endblock %}
 {% block main_content %}
     <script src={% static "javascripts/jquery.min.js" %}></script>
 
@@ -23,28 +26,7 @@
 
                             </div>
 
-                            <div class="col-md-6 col-lg-3">
-                                <div id="sidebar">
-        <h2>My blog</h2>
-        <p>This is my blog. I've written {% total_posts %} posts so far.</p>
-        <h3>Latest posts</h3>
-        {% show_latest_posts 3 %}
 
-        <h3>Most commented posts</h3>
-        {% get_most_commented_posts as most_commented_posts %}
-        <ul>
-            {% for post in most_commented_posts %}
-                <li>
-                    <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
-                </li>
-            {% endfor %}
-        </ul>
-
-
-        <p><a href='{% url "blog:post_feed" %}'>Subscribe to my RSS feed</a></p>
-
-    </div>
-                            </div>
 
                         </div>
                     </div>
