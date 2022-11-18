@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.sitemaps',
     'django.contrib.postgres',#全文搜索用
-    'back_stage.apps.BackStageConfig'
+    'back_stage.apps.BackStageConfig',
+    'DjangoUeditor',
 
 
 ]
