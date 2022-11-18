@@ -51,10 +51,7 @@
 {#    <link rel="stylesheet" href={% static "vendor/bootstrap_date-picker/css/bootstrap-datepicker3.min.css" %}>#}
     <link rel="stylesheet" href={% static "vendor/bootstrap_time-picker/css/timepicker.css" %}>
 {#    <link rel="stylesheet" href={% static "vendor/bootstrap_color-picker/css/bootstrap-colorpicker.min.css" %}>#}
-
 {#    <link href="{% static "admin/css/base.css" %}" rel="stylesheet">#}
-
-
 
 
     {% block head_add %}
@@ -69,23 +66,11 @@
         <section id="container" class="sidebar-closed">
 
         <header class="header dark-bg">
-{#            <div class="toggle-nav">#}
-{#                <div class="icon-reorder tooltips" data-original-title="折叠导航" data-placement="bottom"><i class="icon_menu"></i></div>#}
-{#            </div>#}
-
             <!--logo start-->
-{#            <a href="{% url "back_stage:index" %}" class="logo"><span class="lite">主页</span></a>#}
             {% block header_menu %}
                 <a href="{% url "blog:post_list" %}" class="logo"><span class="lite">博客</span></a>
             {% endblock %}
-
-
-
             <!--logo end-->
-
-
-
-
 
             <div class="nav search-row" id="top_menu">
                 <!--  search form start -->
@@ -102,14 +87,9 @@
             </div>
 
 
-
-
-
             <div class="top-nav notification-row">
                 <!-- notificatoin dropdown start-->
                 <ul class="nav pull-right top-menu">
-
-
 
                     <!-- task notificatoin start -->
 
