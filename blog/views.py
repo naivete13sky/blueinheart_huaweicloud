@@ -1,5 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
+from django.utils.decorators import method_decorator
+
 from .models import Post, Comment,MyTag
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView
@@ -36,7 +38,7 @@ def post_list(request,tag_slug=None):
         posts = paginator.page(paginator.num_pages)
     return render(request, 'blog/post/list.html', {'page': page, 'posts': posts, 'tag': tag})
 
-
+@method_decorator(login_required, name='dispatch')
 class PostListView(ListView):
     queryset = Post.published.all()
     context_object_name = 'posts'
@@ -128,7 +130,7 @@ class PostListView(ListView):
         else:
             context['current_page'] = 1
 
-        #根据料号ID精准搜索
+        #快速搜索
         search_by_post_title_body = self.request.GET.get('search_by_post_title_body',False)
         if search_by_post_title_body:
             print("search_by_post_title_body:",search_by_post_title_body)
