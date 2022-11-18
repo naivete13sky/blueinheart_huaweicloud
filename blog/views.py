@@ -129,16 +129,17 @@ class PostListView(ListView):
             context['current_page'] = 1
 
         #根据料号ID精准搜索
-        search_by_posts_title_body = self.request.GET.get('search_by_posts_title_body',False)
-        if search_by_posts_title_body:
-            print("search_by_posts_title_body:",search_by_posts_title_body)
-            context['posts_page'] = Post.objects.filter(Q(id=search_by_posts_title_body))
+        search_by_post_title_body = self.request.GET.get('search_by_post_title_body',False)
+        if search_by_post_title_body:
+            print("search_by_post_title_body:",search_by_post_title_body)
+            context['posts_page'] = Post.objects.filter(Q(title__contains=search_by_post_title_body))
         return context
 
     def post(self, request):  # ***** this method required! ******
         self.object_list = self.get_queryset()
         if request.method == 'POST':
             print("POST!!!")
+            # 跳转页面用的，跳转指定页面用的post方法。
             if request.POST.__contains__("page_jump"):
                 print(request.POST.get("page_jump"))
                 return HttpResponse(request.POST.get("page_jump"))

@@ -6,13 +6,13 @@
 {% block search %}
     {% csrf_token %}
     <script src={% static "javascripts/jquery.min.js" %}></script>
-    <input class="form-control" id="form-control" placeholder="文章名称、内容" type="text" onkeydown="if(event.keyCode==13) {search_by_title_body()}">
+    <input class="form-control" id="form-control" placeholder="文章名称、内容" type="text" onkeydown="if(event.keyCode==13) {search_by_post_title_body()}">
 
     <script>
-        function search_by_title_body() {
+        function search_by_post_title_body() {
            {#alert(123);#}
            {#$('.btn_page_jump').click()#}
-           window.location.href = "?search_by_job_id="+$("#form-control").val();
+           window.location.href = "?search_by_post_title_body="+$("#form-control").val();
         }
     </script>
 

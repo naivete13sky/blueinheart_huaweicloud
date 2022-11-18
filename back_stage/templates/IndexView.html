@@ -2,7 +2,7 @@
 {% load static  %}
 {% block title %}个人主页{% endblock %}
 {% block header_menu %}
-    <a href="{% url "blog:post_list" %}" class="logo"><span class="lite">打开博客</span></a>
+    <a href="{% url "blog:PostListView" %}" class="logo"><span class="lite">打开博客</span></a>
 {% endblock %}
 {% block header_dropdown %}
 
@@ -449,11 +449,11 @@
                         <div class="row">
                             <div class="col-sm-6 col-md-4 col-lg-3">
                                 <div class="panel widgetbox wbox-1 bg-darker-2 color-light">
-                                    <a href="{% url "blog:post_list" %}">
+                                    <a href="{% url "blog:PostListView" %}">
                                         <div class="panel-content">
 
-                                            <h1 class="title color-light-1"><i class="fa fa-globe"></i> <a href="{% url "blog:post_list" %}">博客</a> </h1>
-                                            <h4 class="subtitle"><a href="{% url "blog:post_list" %}">学习、心得</a></h4>
+                                            <h1 class="title color-light-1"><i class="fa fa-globe"></i> <a href="{% url "blog:PostListView" %}">博客</a> </h1>
+                                            <h4 class="subtitle"><a href="{% url "blog:PostListView" %}">学习、心得</a></h4>
                                         </div>
                                     </a>
                                 </div>
