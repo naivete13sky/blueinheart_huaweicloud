@@ -60,197 +60,185 @@
 </head>
 
 <body>
-
-
     <!-- container section start -->
         <section id="container" class="sidebar-closed">
+            <header class="header dark-bg">
+                <!--logo start-->
+                {% block header_menu %}
+                    <a href="{% url "blog:post_list" %}" class="logo"><span class="lite">博客</span></a>
+                {% endblock %}
+                <!--logo end-->
 
-        <header class="header dark-bg">
-            <!--logo start-->
-            {% block header_menu %}
-                <a href="{% url "blog:post_list" %}" class="logo"><span class="lite">博客</span></a>
-            {% endblock %}
-            <!--logo end-->
-
-            <div class="nav search-row" id="top_menu">
                 <!--  search form start -->
-                <ul class="nav top-menu">
-                  <li>
-                    {% block search %}
-                        <form class="navbar-form">
-                          <input class="form-control" placeholder="Search" type="text">
-                        </form>
-                    {% endblock %}
-                  </li>
-                </ul>
+                <div class="nav search-row" id="top_menu">
+                    <ul class="nav top-menu">
+                        <li>
+                            {% block search %}
+                                <form class="navbar-form">
+                                    <input class="form-control" placeholder="Search" type="text">
+                                </form>
+                            {% endblock %}
+                        </li>
+                    </ul>
+                </div>
                 <!--  search form end -->
-            </div>
+
+                <div class="top-nav notification-row">
+                    <!-- notificatoin dropdown start-->
+                    <ul class="nav pull-right top-menu">
+                        <!-- task notificatoin start -->
+
+                        <!-- task notificatoin end -->
 
 
-            <div class="top-nav notification-row">
-                <!-- notificatoin dropdown start-->
-                <ul class="nav pull-right top-menu">
+                        <!-- inbox notificatoin start-->
 
-                    <!-- task notificatoin start -->
-
-                    <!-- task notificatoin end -->
+                        <!-- inbox notificatoin end -->
 
 
-                    <!-- inbox notificatoin start-->
+                        <!-- alert notification start-->
 
-                    <!-- inbox notificatoin end -->
-
-
-                    <!-- alert notification start-->
-
-                    <!-- alert notification end-->
+                        <!-- alert notification end-->
 
 
-                    <!-- user login dropdown start-->
-                    {% block header_dropdown %}
-                        <li class="dropdown">
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                                        <span class="profile-ava">
-{#                                            <img alt="" src={% static "index_base_20220818/img/avatar1_small.jpg" %}>#}
-                                        </span>
+                        <!-- user login dropdown start-->
+                        {% block header_dropdown %}
+                            <li class="dropdown">
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                            <span class="profile-ava">
+    {#                                            <img alt="" src={% static "index_base_20220818/img/avatar1_small.jpg" %}>#}
+                                            </span>
 
-                                        <span class="user-name">{{ request.user.first_name }}{{ request.user.last_name }}</span>
+                                            <span class="user-name">{{ request.user.first_name }}{{ request.user.last_name }}</span>
 
-                                        <b class="caret"></b>
-                        </a>
+                                            <b class="caret"></b>
+                            </a>
 
-                        <ul class="dropdown-menu extended logout">
-                            <div class="log-arrow-up"></div>
-                            <li class="eborder-top">
-                                <a href={% url "dashboard" %}><i class="icon_profile"></i>我的资料</a>
-                            </li>
-                            <li>
-                            <a href={% url "logout" %}><i class="icon_key_alt"></i> Log Out</a>
-                            </li>
-                        </ul>
+                            <ul class="dropdown-menu extended logout">
+                                <div class="log-arrow-up"></div>
+                                <li class="eborder-top">
+                                    <a href={% url "dashboard" %}><i class="icon_profile"></i>我的资料</a>
+                                </li>
+                                <li>
+                                <a href={% url "logout" %}><i class="icon_key_alt"></i> Log Out</a>
+                                </li>
+                            </ul>
 
-                    </li>
-                    {% endblock %}
+                        </li>
+                        {% endblock %}
 
-                    <!-- user login dropdown end -->
+                        <!-- user login dropdown end -->
 
-                </ul>
-                <!-- notificatoin dropdown end-->
-            </div>
-
-        </header>
-        <!--header end-->
-
-        <!--sidebar start-->
-        <aside>
-            <div id="sidebar" class="nav-collapse">
-            <!-- sidebar menu start-->
-                <ul class="sidebar-menu">
-                </ul>
-            <!-- sidebar menu end-->
-            </div>
-        </aside>
-        <!--sidebar end-->
-
-        <!--main content start-->
-        <section id="main-content">
-            <section class="wrapper">
-                <!--overview start-->
-                <div class="row">
-                  <div class="col-lg-12">
-
-                    <ol class="breadcrumb">
-                    {% block content_header_child %}
-                      <li><i class="fa fa-home"></i><a href=>Home</a></li>
-                      <li><i class="fa fa-laptop"></i>Dashboard</li>
-                    {% endblock %}
-
-                    </ol>
-                  </div>
+                    </ul>
+                    <!-- notificatoin dropdown end-->
                 </div>
 
-                {% block main_content %}
+            </header>
+            <!--header end-->
+
+            <!--sidebar start-->
+            <aside>
+                <div id="sidebar" class="nav-collapse">
+                <!-- sidebar menu start-->
+                    <ul class="sidebar-menu">
+                    </ul>
+                <!-- sidebar menu end-->
+                </div>
+            </aside>
+            <!--sidebar end-->
+
+            <!--main content start-->
+            <section id="main-content">
+                <section class="wrapper">
+                    <!--overview start-->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <ol class="breadcrumb">
+                                {% block content_header_child %}
+                                    <li><i class="fa fa-home"></i><a href=>Home</a></li>
+                                    <li><i class="fa fa-laptop"></i>Dashboard</li>
+                                {% endblock %}
+                            </ol>
+                        </div>
+                    </div>
+
+                    {% block main_content %}
+                        <script src={% static "javascripts/jquery.min.js" %}></script>
+                        <script type="text/javascript" src='C:/cc/python/epwork/dms/collected_static/vendor/data-table/media/js/jquery.dataTables.min.js'></script>
+                        <script type="text/javascript" src="//code.jquery.com/jquery-1.12.3.min.js"></script>
+                        <script type="text/javascript" src=" //cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+                        <table id="table1" class="table table-condensed ">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Score</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>001</td>
+                                            <td>zhang</td>
+                                            <td>98</td>
+                                        </tr>
+                                        <tr>
+                                            <td>002</td>
+                                            <td>wang</td>
+                                            <td>99</td>
+                                        </tr>
+                                        <tr>
+                                            <td>002</td>
+                                            <td>wang</td>
+                                            <td>99</td>
+                                        </tr>
+                                        <tr>
+                                            <td>002</td>
+                                            <td>wang</td>
+                                            <td>99</td>
+                                        </tr>
+                                        <tr>
+                                            <td>002</td>
+                                            <td>wang</td>
+                                            <td>99</td>
+                                        </tr>
+                                        <tr>
+                                            <td>002</td>
+                                            <td>wang</td>
+                                            <td>99</td>
+                                        </tr>
+                                        <tr>
+                                            <td>002</td>
+                                            <td>wang</td>
+                                            <td>99</td>
+                                        </tr>
+
+                                    </tbody>
+                        </table>
+                        <script>
+
+                            $(document).ready(function(){
+                                    $('#table1').dataTable(
+                                        {
+                                            "bLengthChange": true, //开关，是否显示每页显示多少条数据的下拉框
+                                            "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "所有"]],//设置每页显示数据条数的下拉选项
+                                            'iDisplayLength': 5, //每页初始显示5条记录
+                                        }
+                                    );
+                                });
+                        </script>
+                    {% endblock %}
 
 
-                    <script src={% static "javascripts/jquery.min.js" %}></script>
-                    <script type="text/javascript" src='C:/cc/python/epwork/dms/collected_static/vendor/data-table/media/js/jquery.dataTables.min.js'></script>
-                    <script type="text/javascript" src="//code.jquery.com/jquery-1.12.3.min.js"></script>
-                    <script type="text/javascript" src=" //cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+                </section>
+                <div class="text-right">
 
-                    <table id="table1" class="table table-condensed ">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Name</th>
-                                        <th>Score</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>001</td>
-                                        <td>zhang</td>
-                                        <td>98</td>
-                                    </tr>
-                                    <tr>
-                                        <td>002</td>
-                                        <td>wang</td>
-                                        <td>99</td>
-                                    </tr>
-                                    <tr>
-                                        <td>002</td>
-                                        <td>wang</td>
-                                        <td>99</td>
-                                    </tr>
-                                    <tr>
-                                        <td>002</td>
-                                        <td>wang</td>
-                                        <td>99</td>
-                                    </tr>
-                                    <tr>
-                                        <td>002</td>
-                                        <td>wang</td>
-                                        <td>99</td>
-                                    </tr>
-                                    <tr>
-                                        <td>002</td>
-                                        <td>wang</td>
-                                        <td>99</td>
-                                    </tr>
-                                    <tr>
-                                        <td>002</td>
-                                        <td>wang</td>
-                                        <td>99</td>
-                                    </tr>
-
-                                </tbody>
-                    </table>
-
-                    <script>
-
-                        $(document).ready(function(){
-                                $('#table1').dataTable(
-                                    {
-                                        "bLengthChange": true, //开关，是否显示每页显示多少条数据的下拉框
-                                        "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "所有"]],//设置每页显示数据条数的下拉选项
-                                        'iDisplayLength': 5, //每页初始显示5条记录
-                                    }
-                                );
-                            });
-                    </script>
-
-                {% endblock %}
-
-
+                </div>
             </section>
-            <div class="text-right">
 
-            </div>
+            <a href="#" class="scroll-to-top"><i class="fa fa-angle-double-up"></i></a>
+            <!--main content end-->
         </section>
-
-        <a href="#" class="scroll-to-top"><i class="fa fa-angle-double-up"></i></a>
-        <!--main content end-->
-    </section>
-    <!-- container section start -->
+    <!-- container section end -->
 
     <!-- javascripts -->
     {#  <script src={% static "index_base_20220818/js/jquery.js" %}></script>#}
@@ -344,58 +332,51 @@
     </script>
 
     {% block js %}
+        <script src={% static "javascripts/template-script.min.js" %}></script>
+        <script src={% static "javascripts/template-init.min.js" %}></script>
+        <script src={% static "vendor/bootstrap_max-lenght/bootstrap-maxlength.js" %}></script>
+        <script src={% static "vendor/select2/js/select2.min.js" %}></script>
+        <script src={% static "vendor/input-masked/inputmask.bundle.min.js" %}></script>
+        <script src={% static "vendor/input-masked/phone-codes/phone.js" %}></script>
+        <script src={% static "vendor/bootstrap_time-picker/js/bootstrap-timepicker.js" %}></script>
+        <script src={% static "javascripts/examples/forms/advanced.js" %}></script>
+        <script src={% static "vendor/toastr/toastr.min.js" %}></script>
+        <script src={% static "vendor/chart-js/chart.min.js" %}></script>
+        <script src={% static "vendor/magnific-popup/jquery.magnific-popup.min.js" %}></script>
+        <script src={% static "javascripts/examples/dashboard.js" %}></script>
+        <script src={% static "vendor/data-table/media/js/jquery.dataTables.min.js" %}></script>
+        <script src={% static "vendor/data-table/media/js/dataTables.bootstrap.min.js" %}></script>
+        <script src={% static "vendor/data-table/extensions/Responsive/js/dataTables.responsive.min.js" %}></script>
+        <script src={% static "vendor/data-table/extensions/Responsive/js/responsive.bootstrap.min.js" %}></script>
+        <script src={% static "javascripts/examples/tables/data-tables.js" %}></script>
 
 
-    <script src={% static "javascripts/template-script.min.js" %}></script>
-    <script src={% static "javascripts/template-init.min.js" %}></script>
-    <script src={% static "vendor/bootstrap_max-lenght/bootstrap-maxlength.js" %}></script>
-    <script src={% static "vendor/select2/js/select2.min.js" %}></script>
-    <script src={% static "vendor/input-masked/inputmask.bundle.min.js" %}></script>
-    <script src={% static "vendor/input-masked/phone-codes/phone.js" %}></script>
-    <script src={% static "vendor/bootstrap_time-picker/js/bootstrap-timepicker.js" %}></script>
-    <script src={% static "javascripts/examples/forms/advanced.js" %}></script>
-    <script src={% static "vendor/toastr/toastr.min.js" %}></script>
-    <script src={% static "vendor/chart-js/chart.min.js" %}></script>
-    <script src={% static "vendor/magnific-popup/jquery.magnific-popup.min.js" %}></script>
-    <script src={% static "javascripts/examples/dashboard.js" %}></script>
-    <script src={% static "vendor/data-table/media/js/jquery.dataTables.min.js" %}></script>
-    <script src={% static "vendor/data-table/media/js/dataTables.bootstrap.min.js" %}></script>
-    <script src={% static "vendor/data-table/extensions/Responsive/js/dataTables.responsive.min.js" %}></script>
-    <script src={% static "vendor/data-table/extensions/Responsive/js/responsive.bootstrap.min.js" %}></script>
-    <script src={% static "javascripts/examples/tables/data-tables.js" %}></script>
+    {#    <script src={% static "javascripts/jquery.min.js" %}></script>#}
+        <script src={% static "javascripts/jquery.cookie.js" %}></script>
+    {#    <script src={% static "vendor/bootstrap/js/bootstrap.min.js" %}></script>#}
+        <script src={% static "vendor/nano-scroller/nano-scroller.js" %}></script>
+        <script src={% static "javascripts/template-script.min.js" %}></script>
+        <script src={% static "javascripts/template-init.min.js" %}></script>
+        <script src={% static "vendor/data-table/media/js/jquery.dataTables.min.js" %}></script>
+        <script src={% static "vendor/data-table/media/js/dataTables.bootstrap.min.js" %}></script>
+        <script src={% static "javascripts/examples/tables/data-tables.js" %}></script>
+        <script>
+            $.fn.extend({
+                animateCss: function(animationName) {
+                    var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+                    this.addClass('animated ' + animationName).one(animationEnd, function() {
+                        $(this).removeClass('animated ' + animationName);
+                    });
+                }
+            });
 
-
-{#    <script src={% static "javascripts/jquery.min.js" %}></script>#}
-    <script src={% static "javascripts/jquery.cookie.js" %}></script>
-{#    <script src={% static "vendor/bootstrap/js/bootstrap.min.js" %}></script>#}
-    <script src={% static "vendor/nano-scroller/nano-scroller.js" %}></script>
-    <script src={% static "javascripts/template-script.min.js" %}></script>
-    <script src={% static "javascripts/template-init.min.js" %}></script>
-    <script src={% static "vendor/data-table/media/js/jquery.dataTables.min.js" %}></script>
-    <script src={% static "vendor/data-table/media/js/dataTables.bootstrap.min.js" %}></script>
-    <script src={% static "javascripts/examples/tables/data-tables.js" %}></script>
-
-
-
-
-    <script>
-        $.fn.extend({
-            animateCss: function(animationName) {
-                var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
-                this.addClass('animated ' + animationName).one(animationEnd, function() {
-                    $(this).removeClass('animated ' + animationName);
-                });
-            }
-        });
-
-        $(".btn-animated").on('click', function() {
-            var animation = $(this).attr('data-animated-class');
-            var img = $(this).attr('data-img');
-            $("#" + img).animateCss(animation);
-        });
-    </script>
-
-{% endblock %}
+            $(".btn-animated").on('click', function() {
+                var animation = $(this).attr('data-animated-class');
+                var img = $(this).attr('data-img');
+                $("#" + img).animateCss(animation);
+            });
+        </script>
+    {% endblock %}
 
 </body>
 
