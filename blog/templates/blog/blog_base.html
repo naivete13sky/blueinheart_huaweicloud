@@ -5,10 +5,14 @@
 {% block header_menu %}
     <a href="{% url "back_stage:index" %}" class="logo"><span class="lite">打开主页</span></a>
 {% endblock %}
+
+
+
 {% block content_header_child %}
     <li><i class="fa fa-home"></i><a href={% url 'blog:post_list' %}>博客主页</a></li>
 
 {% endblock %}
+
 {% block main_content %}
     <script src={% static "javascripts/jquery.min.js" %}></script>
 
