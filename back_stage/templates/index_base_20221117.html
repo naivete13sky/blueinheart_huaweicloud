@@ -74,9 +74,13 @@
 {#            </div>#}
 
             <!--logo start-->
-            <a href="{% url "back_stage:index" %}" class="logo"><span class="lite">主页</span></a>
+{#            <a href="{% url "back_stage:index" %}" class="logo"><span class="lite">主页</span></a>#}
+            {% block header_menu %}
+                <a href="{% url "blog:post_list" %}" class="logo"><span class="lite">博客</span></a>
+            {% endblock %}
 
-            <a href="{% url "blog:post_list" %}" class="logo">博客</a>
+
+
             <!--logo end-->
 
 
@@ -174,7 +178,7 @@
 
                     <ol class="breadcrumb">
                     {% block content_header_child %}
-                      <li><i class="fa fa-home"></i><a href={% url "back_stage:dashboard" %}>Home</a></li>
+                      <li><i class="fa fa-home"></i><a href=>Home</a></li>
                       <li><i class="fa fa-laptop"></i>Dashboard</li>
                     {% endblock %}
 
