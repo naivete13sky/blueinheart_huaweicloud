@@ -4,6 +4,7 @@
 {% block title %}博客{% endblock %}
 
 {% block search %}
+    {% csrf_token %}
     <script src={% static "javascripts/jquery.min.js" %}></script>
     <input class="form-control" id="form-control" placeholder="文章名称、内容" type="text" onkeydown="if(event.keyCode==13) {search_by_title_body()}">
 

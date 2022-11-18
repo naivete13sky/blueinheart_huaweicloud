@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from .models import Post, Comment,MyTag
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -133,6 +134,16 @@ class PostListView(ListView):
             print("search_by_posts_title_body:",search_by_posts_title_body)
             context['posts_page'] = Post.objects.filter(Q(id=search_by_posts_title_body))
         return context
+
+    def post(self, request):  # ***** this method required! ******
+        self.object_list = self.get_queryset()
+        if request.method == 'POST':
+            print("POST!!!")
+            if request.POST.__contains__("page_jump"):
+                print(request.POST.get("page_jump"))
+                return HttpResponse(request.POST.get("page_jump"))
+
+
 
 def post_detail(request, year, month, day, post):
     post = get_object_or_404(Post, slug=post, status="published", publish__year=year, publish__month=month,
