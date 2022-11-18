@@ -5,7 +5,7 @@ from django.views.generic import ListView
 from django.core.mail import send_mail
 from .forms import EmailPostForm, CommentForm,SearchForm
 from taggit.models import Tag
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 
 from django.contrib.auth.decorators import login_required
@@ -42,6 +42,96 @@ class PostListView(ListView):
     paginate_by = 3
     template_name = 'blog/post/PostListView.html'
 
+    def get_pagination_data(self, paginator, page_obj, around_count=2):
+        left_has_more = False
+
+        right_has_more = False
+        current_page = page_obj.number
+        if current_page <= around_count + 2:
+            left_range = range(1, current_page)
+        else:
+            left_has_more = True
+            left_range = range(current_page - around_count, current_page)
+
+        if current_page >= paginator.num_pages - around_count - 1:
+            right_range = range(current_page + 1, paginator.num_pages + 1)
+        else:
+            right_has_more = True
+            right_range = range(current_page + 1, current_page + around_count + 1)
+
+        pagination_data = {
+            'left_has_more': left_has_more,
+            'right_has_more': right_has_more,
+            'left_range': left_range,
+            'right_range': right_range
+        }
+        return pagination_data
+
+    def get_context_data(self, **kwargs):  # 重写get_context_data方法
+        # 很关键，必须把原方法的结果拿到
+        context = super().get_context_data(**kwargs)
+        field_verbose_name = [Post._meta.get_field('id').verbose_name,
+                                  Post._meta.get_field('title').verbose_name,
+                                  Post._meta.get_field('author').verbose_name,
+                                  ]
+        context['field_verbose_name'] = field_verbose_name# 表头用
+
+        context['posts'] = Post.objects.all()
+        # context['posts'] = Post.objects.filter(id=1)
+
+        #分页
+        # print(context)
+        page = self.request.GET.get('page')
+        paginator = Paginator(context['posts'], 3)  # 每页显示3篇文章
+
+        try:
+            context['posts_page'] = paginator.page(page)
+        except PageNotAnInteger:
+            # 如果page参数不是一个整数就返回第一页
+            context['posts_page'] = paginator.page(1)
+        except EmptyPage:
+            # 如果页数超出总页数就返回最后一页
+            context['posts_page'] = paginator.page(paginator.num_pages)
+        pagination_data = self.get_pagination_data(paginator, context['posts_page'])
+        context.update(pagination_data)
+
+        #get方式query数据
+        submit_query_get = self.request.GET.get('submit_query_get',False)
+        if submit_query_get:
+            # 料号使用类型筛选:所有,或者对应的查询值
+            query_job_file_usage_type = self.request.GET.get("query_job_file_usage_type", False)
+            context['posts'] = Post.objects.all()
+
+            # 分页
+            page = self.request.GET.get('page')
+            paginator = Paginator(context['jobs'], 3)  # 每页显示3篇文章
+            try:
+                context['posts_page'] = paginator.page(page)
+            except PageNotAnInteger:
+                # 如果page参数不是一个整数就返回第一页
+                context['posts_page'] = paginator.page(1)
+            except EmptyPage:
+                # 如果页数超出总页数就返回最后一页
+                context['posts_page'] = paginator.page(paginator.num_pages)
+            pagination_data = self.get_pagination_data(paginator, context['posts_page'])
+            context.update(pagination_data)
+
+        print("len(context['posts_page']:",len(context['posts']))
+
+        #文章很多时，要多页显示，但是在修改非首页内容时，比如修改某个文章，这个文章在第3页，如果不记住页数，修改完成后只能重定向到固定页。为了能记住当前页，用了下面的方法。
+        if self.request.GET.__contains__("page"):
+            current_page = self.request.GET["page"]
+            print("current_page", current_page)
+            context['current_page'] = current_page
+        else:
+            context['current_page'] = 1
+
+        #根据料号ID精准搜索
+        search_by_posts_title_body = self.request.GET.get('search_by_posts_title_body',False)
+        if search_by_posts_title_body:
+            print("search_by_posts_title_body:",search_by_posts_title_body)
+            context['posts_page'] = Post.objects.filter(Q(id=search_by_posts_title_body))
+        return context
 
 def post_detail(request, year, month, day, post):
     post = get_object_or_404(Post, slug=post, status="published", publish__year=year, publish__month=month,
@@ -68,7 +158,6 @@ def post_detail(request, year, month, day, post):
     similar_posts = similar_tags.annotate(same_tags=Count('tags')).order_by('-same_tags', '-publish')[:4]
 
     return render(request, 'blog/post/detail.html', {'post': post,'comments': comments, 'new_comment': new_comment, 'comment_form': comment_form,'similar_posts': similar_posts})
-
 
 
 
