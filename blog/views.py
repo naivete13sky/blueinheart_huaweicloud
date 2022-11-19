@@ -204,27 +204,42 @@ class PostDetailView(DetailView):
                                  publish__day=day)
         if request.method == 'POST':
             print("POST!!!")
-            comment_form = CommentForm(data=request.POST)
-            if comment_form.is_valid():
-                # 通过表单直接创建新数据对象，但是不要保存到数据库中
-                new_comment = comment_form.save(commit=False)
-                new_comment.active  = False
-                # 设置外键为当前文章
-                new_comment.post = post
-                # 将评论数据对象写入数据库
-                new_comment.save()
-                # return HttpResponse("ok")
+            #先判断一下是否有评论权限
+            sub = request.user.username  # 想要访问资源的用户
+            obj = "blog_comment"  # 将要被访问的资源
+            act = "post"  # 用户对资源进行的操作
+            print('sub,obj,act:', sub, obj, act)
+            if enforcer.enforce(sub, obj, act):
+                pass
+                print("权限通过！")
+                comment_form = CommentForm(data=request.POST)
+                if comment_form.is_valid():
+                    # 通过表单直接创建新数据对象，但是不要保存到数据库中
+                    new_comment = comment_form.save(commit=False)
+                    new_comment.active = False
+                    # 设置外键为当前文章
+                    new_comment.post = post
+                    # 将评论数据对象写入数据库
+                    new_comment.save()
+                    # return HttpResponse("ok")
 
-                # 列出文章对应的所有活动的评论
-                comments = post.comments.filter(active=True)
-                new_comment = None
-                post_tags_ids = post.tags.values_list('id', flat=True)
-                similar_tags = Post.published.filter(tags__in=post_tags_ids).exclude(id=post.id)
-                similar_posts = similar_tags.annotate(same_tags=Count('tags')).order_by('-same_tags', '-publish')[:4]
-                return render(request, 'blog/post/PostDetailView.html',
-                              {'post': post, 'comments': comments, 'new_comment': new_comment,
-                               'comment_form': comment_form,
-                               'similar_posts': similar_posts})
+                    # 列出文章对应的所有活动的评论
+                    comments = post.comments.filter(active=True)
+                    new_comment = None
+                    post_tags_ids = post.tags.values_list('id', flat=True)
+                    similar_tags = Post.published.filter(tags__in=post_tags_ids).exclude(id=post.id)
+                    similar_posts = similar_tags.annotate(same_tags=Count('tags')).order_by('-same_tags', '-publish')[
+                                    :4]
+                    return render(request, 'blog/post/PostDetailView.html',
+                                  {'post': post, 'comments': comments, 'new_comment': new_comment,
+                                   'comment_form': comment_form,
+                                   'similar_posts': similar_posts})
+            else:
+                return HttpResponse("游客无此权限！请先登录！")
+
+
+
+
 
 
 
