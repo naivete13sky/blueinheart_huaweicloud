@@ -105,13 +105,18 @@
                         {% block header_dropdown %}
                             <li class="dropdown">
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                                            <span class="profile-ava">
-    {#                                            <img alt="" src={% static "index_base_20220818/img/avatar1_small.jpg" %}>#}
-                                            </span>
+                                <span class="profile-ava">
+{#                                            <img alt="" src={% static "index_base_20220818/img/avatar1_small.jpg" %}>#}
+                                </span>
+                                {% if request.user.username != '' %}
+                                    <span class="user-name">{{ request.user.first_name }}{{ request.user.last_name }}</span>
+                                {% endif %}
+                                {% if request.user.username == '' %}
+                                    <span class="user-name">游客</span>
+                                {% endif %}
 
-                                            <span class="user-name">{{ request.user.first_name }}{{ request.user.last_name }}</span>
 
-                                            <b class="caret"></b>
+                                <b class="caret"></b>
                             </a>
 
                             <ul class="dropdown-menu extended logout">
@@ -120,7 +125,15 @@
                                     <a href={% url "dashboard" %}><i class="icon_profile"></i>我的资料</a>
                                 </li>
                                 <li>
-                                <a href={% url "logout" %}><i class="icon_key_alt"></i> Log Out</a>
+                                    {% if request.user.username != '' %}
+                                        <a href={% url "logout" %}><i class="icon_key_alt"></i> Log Out</a>
+                                    {% endif %}
+
+                                    {% if request.user.username == '' %}
+                                        <a href={% url "login" %}><i class="icon_key_alt"></i> Log In</a>
+                                    {% endif %}
+
+
                                 </li>
                             </ul>
 
