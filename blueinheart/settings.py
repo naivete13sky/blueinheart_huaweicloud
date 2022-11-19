@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     'django.contrib.postgres',#全文搜索用
     'back_stage.apps.BackStageConfig',
     'DjangoUeditor',
+    'casbin_adapter.apps.CasbinAdapterConfig',
+
 
 
 ]
@@ -181,3 +183,4 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
+CASBIN_MODEL = os.path.join(BASE_DIR, 'casbin.conf')

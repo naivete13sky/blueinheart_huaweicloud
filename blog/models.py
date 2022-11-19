@@ -69,7 +69,7 @@ class Post(models.Model):
     published = PublishedManager()  # 自定义管理器
 
     def get_absolute_url(self):
-        return reverse('blog:post_detail', args=[self.publish.year, self.publish.month, self.publish.day, self.slug])
+        return reverse('blog:PostDetailView', args=[self.publish.year, self.publish.month, self.publish.day, self.slug])
 
 
 

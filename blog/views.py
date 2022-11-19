@@ -4,7 +4,7 @@ from django.utils.decorators import method_decorator
 
 from .models import Post, Comment,MyTag
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.views.generic import ListView
+from django.views.generic import ListView,DetailView
 from django.core.mail import send_mail
 from .forms import EmailPostForm, CommentForm,SearchForm
 from taggit.models import Tag
@@ -12,6 +12,32 @@ from django.db.models import Count, Q
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 
 from django.contrib.auth.decorators import login_required
+
+from casbin_adapter.enforcer import enforcer
+import functools
+
+
+#写了一个带参数的装饰器，用在cretview上面，可以先判断权限。
+def casbin_permission(casbin_obj,casbin_act):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(request,*args, **kwargs):
+            # 判断权限
+            sub = request.user.username  # 想要访问资源的用户
+            obj = casbin_obj  # 将要被访问的资源
+            act = casbin_act # 用户对资源进行的操作
+            print('sub,obj,act:', sub, obj, act)
+            if enforcer.enforce(sub, obj, act):
+                pass
+                print("权限通过！")
+                return func(request, *args, **kwargs)
+            else:
+                return HttpResponse("您无此权限！请联系管理员！")
+
+        return wrapper
+    return decorator
+
+
 
 @login_required
 def post_list(request,tag_slug=None):
@@ -38,7 +64,7 @@ def post_list(request,tag_slug=None):
         posts = paginator.page(paginator.num_pages)
     return render(request, 'blog/post/list.html', {'page': page, 'posts': posts, 'tag': tag})
 
-@method_decorator(login_required, name='dispatch')
+# @method_decorator(login_required, name='dispatch')
 class PostListView(ListView):
     queryset = Post.published.all()
     context_object_name = 'posts'
@@ -148,6 +174,58 @@ class PostListView(ListView):
             if request.POST.__contains__("page_jump"):
                 print(request.POST.get("page_jump"))
                 return HttpResponse(request.POST.get("page_jump"))
+
+
+class PostDetailView(DetailView):
+    model = Post
+    template_name = "PostDetailView.html"
+    context_object_name = "post"
+    # pk_url_kwarg = "pk"  # pk_url_kwarg默认值就是pk，这里可以覆盖，但必须和url中的命名组参数名称一致
+
+    def get(self, request,year, month, day, post, *args, **kwargs):
+        post = get_object_or_404(Post, slug=post, status="published", publish__year=year, publish__month=month,
+                                 publish__day=day)
+
+        # 列出文章对应的所有活动的评论
+        comments = post.comments.filter(active=True)
+        new_comment = None
+        comment_form = CommentForm()
+        # 显示相近Tag的文章列表
+        post_tags_ids = post.tags.values_list('id', flat=True)
+        similar_tags = Post.published.filter(tags__in=post_tags_ids).exclude(id=post.id)
+        similar_posts = similar_tags.annotate(same_tags=Count('tags')).order_by('-same_tags', '-publish')[:4]
+
+        return render(request, 'blog/post/PostDetailView.html',
+                      {'post': post, 'comments': comments, 'new_comment': new_comment, 'comment_form': comment_form,
+                       'similar_posts': similar_posts})
+
+    def post(self, request, year, month, day, post):  # ***** this method required! ******
+        post = get_object_or_404(Post, slug=post, status="published", publish__year=year, publish__month=month,
+                                 publish__day=day)
+        if request.method == 'POST':
+            print("POST!!!")
+            comment_form = CommentForm(data=request.POST)
+            if comment_form.is_valid():
+                # 通过表单直接创建新数据对象，但是不要保存到数据库中
+                new_comment = comment_form.save(commit=False)
+                new_comment.active  = False
+                # 设置外键为当前文章
+                new_comment.post = post
+                # 将评论数据对象写入数据库
+                new_comment.save()
+                # return HttpResponse("ok")
+
+                # 列出文章对应的所有活动的评论
+                comments = post.comments.filter(active=True)
+                new_comment = None
+                post_tags_ids = post.tags.values_list('id', flat=True)
+                similar_tags = Post.published.filter(tags__in=post_tags_ids).exclude(id=post.id)
+                similar_posts = similar_tags.annotate(same_tags=Count('tags')).order_by('-same_tags', '-publish')[:4]
+                return render(request, 'blog/post/PostDetailView.html',
+                              {'post': post, 'comments': comments, 'new_comment': new_comment,
+                               'comment_form': comment_form,
+                               'similar_posts': similar_posts})
+
 
 
 
