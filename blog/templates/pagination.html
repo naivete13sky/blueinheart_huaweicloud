@@ -6,39 +6,40 @@
         <ul class="pagination">
             {# 上一页 #}
             {% if page_obj.has_previous %}
-                <li><a href="{% url 'blog:PostListView' %}?page={{ page_obj.previous_page_number }}">上一页</a></li>
+                <li><a href="?page={{ page_obj.previous_page_number }}">上一页</a></li>
             {% else %}
                 <li class="disabled"><a href="javascript:void(0);">上一页</a></li>
             {% endif %}
             {# 中间左边部分 #}
             {% if left_has_more %}
-                <li><a href="{% url 'blog:PostListView' %}?page=1">1</a></li>
+{#                <li><a href="{% url 'blog:PostListView' %}?page=1">1</a></li>#}
+                <li><a href="?page=1">1</a></li>
                 <li><a href="javascript:void(0);">...</a></li>
                 {% for page in left_range %}
-                    <li><a href="{% url 'blog:PostListView' %}?page={{ page }}">{{ page }}</a></li>
+                    <li><a href="?page={{ page }}">{{ page }}</a></li>
                 {% endfor %}
             {% else %}
                 {% for page in left_range %}
-                    <li><a href="{% url 'blog:PostListView' %}?page={{ page }}">{{ page }}</a></li>
+                    <li><a href="?page={{ page }}">{{ page }}</a></li>
                 {% endfor %}
             {% endif %}
             {# 中间部分当前页 #}
-            <li class="active"><a href="{% url 'blog:PostListView' %}?page={{ page_obj.number }}">{{ page_obj.number }}</a></li>
+            <li class="active"><a href="?page={{ page_obj.number }}">{{ page_obj.number }}</a></li>
             {# 中间右边部分 #}
             {% if right_has_more %}
                 {% for page in right_range %}
-                    <li><a href="{% url 'blog:PostListView' %}?page={{ page }}">{{ page }}</a></li>
+                    <li><a href="?page={{ page }}">{{ page }}</a></li>
                 {% endfor %}
                 <li><a href="javascript:void(0);">...</a></li>
-                <li><a href="{% url 'blog:PostListView' %}?page={{ paginator.num_pages }}">{{ paginator.num_pages }}</a></li>
+                <li><a href="?page={{ paginator.num_pages }}">{{ paginator.num_pages }}</a></li>
             {% else %}
                 {% for page in right_range %}
-                    <li><a href="{% url 'blog:PostListView' %}?page={{ page }}">{{ page }}</a></li>
+                    <li><a href="?page={{ page }}">{{ page }}</a></li>
                 {% endfor %}
             {% endif %}
             {# 下一页 #}
             {% if page_obj.has_next %}
-                <li><a href="{% url 'blog:PostListView' %}?page={{ page_obj.next_page_number }}">下一页</a></li>
+                <li><a href="?page={{ page_obj.next_page_number }}">下一页</a></li>
             {% else %}
                 <li class="disabled"><a href="javascript:void(0);">下一页</a></li>
             {% endif %}
@@ -52,7 +53,9 @@
                 </span>
 
             </span>
-            共 {{ page.paginator.num_pages }}页
+{#            共 {{ page.paginator.num_pages }}页#}
+            共 {{ pages_count }}页
+
         </ul>
     </span>
 

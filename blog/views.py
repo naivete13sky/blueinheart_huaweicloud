@@ -38,12 +38,12 @@ def casbin_permission(casbin_obj,casbin_act):
     return decorator
 
 
-
 @login_required
 def post_list(request,tag_slug=None):
     object_list = Post.published.all()
 
     tag = None
+    print("tag_slug:", tag_slug)
     if tag_slug:
         # tag = get_object_or_404(Tag, slug=tag_slug)
         # 从MyTag对应的数据库表里查询tag
@@ -70,6 +70,8 @@ class PostListView(ListView):
     context_object_name = 'posts'
     paginate_by = 3
     template_name = 'blog/post/PostListView.html'
+
+
 
     def get_pagination_data(self, paginator, page_obj, around_count=2):
         left_has_more = False
@@ -106,12 +108,25 @@ class PostListView(ListView):
         context['field_verbose_name'] = field_verbose_name# 表头用
 
         context['posts'] = Post.objects.all()
-        # context['posts'] = Post.objects.filter(id=1)
+
+        # 先看一下是不是按标签在搜索的
+        try:
+            tag_slug = self.kwargs['tag_slug']
+        except Exception as e:
+            print("没找到tag_slug",e)
+            tag_slug = None
+        print("tag_slug:", tag_slug)
+        if tag_slug:
+            # 从MyTag对应的数据库表里查询tag
+            tag = get_object_or_404(MyTag, slug=tag_slug)
+            context['posts'] = context['posts'].filter(tags__in=[tag])
+
+
 
         #分页
-        # print(context)
         page = self.request.GET.get('page')
         paginator = Paginator(context['posts'], 3)  # 每页显示3篇文章
+        print("paginator.num_pages:",paginator.num_pages)
 
         try:
             context['posts_page'] = paginator.page(page)
@@ -123,6 +138,7 @@ class PostListView(ListView):
             context['posts_page'] = paginator.page(paginator.num_pages)
         pagination_data = self.get_pagination_data(paginator, context['posts_page'])
         context.update(pagination_data)
+        context['pages_count'] = paginator.num_pages
 
         #get方式query数据
         submit_query_get = self.request.GET.get('submit_query_get',False)
@@ -238,12 +254,6 @@ class PostDetailView(DetailView):
                 return HttpResponse("游客无此权限！请先登录！")
 
 
-
-
-
-
-
-
 def post_detail(request, year, month, day, post):
     post = get_object_or_404(Post, slug=post, status="published", publish__year=year, publish__month=month,
                              publish__day=day)
@@ -271,7 +281,6 @@ def post_detail(request, year, month, day, post):
     return render(request, 'blog/post/detail.html', {'post': post,'comments': comments, 'new_comment': new_comment, 'comment_form': comment_form,'similar_posts': similar_posts})
 
 
-
 def post_share(request, post_id):
     # 通过id 获取 post 对象
     post = get_object_or_404(Post, id=post_id, status='published')
@@ -292,7 +301,6 @@ def post_share(request, post_id):
     else:
         form = EmailPostForm()
     return render(request, 'blog/post/share.html', {'post': post, 'form': form})
-
 
 
 def post_search(request):
