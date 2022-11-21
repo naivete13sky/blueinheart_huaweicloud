@@ -28,27 +28,53 @@
                     <div class="page-body" style=padding-top:2px;>
                         <div class="row">
                             <div class="col-md-6 col-lg-10">
-{#                                <h1>文章列表</h1>#}
+
+
+
+
+                                {#                                <h1>文章列表</h1>#}
                             {% for post in posts_page %}
-                                <h2>
-                                    <a href="{{ post.get_absolute_url }}">
-                                        <h1>{{ post.title }}</h1>
-                                    </a>
-                                </h2>
 
-                                <p class="tags">
-                                    标签：
-                                    {% for tag in post.tags.all %}
-                                        <a href="{% url "blog:post_list_by_tag" tag.slug %}">{{ tag.name }}</a>
-                                        {% if not forloop.last %}, {% endif %}
-                                    {% endfor %}
-                                </p>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="panel">
+                                            <div class="panel-header">
+                                                <h3 class="panel-title">
+                                                    <h2>
+                                                        <a href="{{ post.get_absolute_url }}">
+                                                            <h1>{{ post.title }}</h1>
+                                                        </a>
+                                                    </h2>
+                                                </h3>
+                                                <h3 class="panel-subtitle">
+                                                    <p class="tags">
+                                                        标签：
+                                                        {% for tag in post.tags.all %}
+                                                            <a href="{% url "blog:post_list_by_tag" tag.slug %}">{{ tag.name }}</a>
+                                                            {% if not forloop.last %}, {% endif %}
+                                                        {% endfor %}
+                                                    </p>
 
-                                <p class="date">
-                                {{ post.author }}发表于 {{ post.publish }}
-                                </p>
-                        {#        {{ post.body|truncatewords:30|linebreaks }}#}
-                                {{ post.body|markdown|truncatewords_html:20 }}
+                                                </h3>
+                                            </div>
+                                            <div class="panel-content">
+                                                {#        {{ post.body|truncatewords:30|linebreaks }}#}
+                                                {{ post.body|markdown|truncatewords_html:20 }}
+
+                                            </div>
+                                            <div class="panel-footer" style=padding-bottom:1px;>
+                                                <p class="date" >
+                                                    {{ post.author }}发表于 {{ post.publish }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
                             {% endfor %}
 
                             {% include 'pagination.html' with page=page_obj %}
