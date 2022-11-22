@@ -73,7 +73,6 @@ class PostListView(ListView):
 
     def get_pagination_data(self, paginator, page_obj, around_count=2):
         left_has_more = False
-
         right_has_more = False
         current_page = page_obj.number
         if current_page <= around_count + 2:
@@ -134,7 +133,6 @@ class PostListView(ListView):
         page = self.request.GET.get('page')
         paginator = Paginator(context['posts'], 3)  # 每页显示3篇文章
         print("paginator.num_pages:",paginator.num_pages)
-
         try:
             context['posts_page'] = paginator.page(page)
         except PageNotAnInteger:
@@ -157,7 +155,6 @@ class PostListView(ListView):
             context['current_page'] = current_page
         else:
             context['current_page'] = 1
-
 
         return context
 
