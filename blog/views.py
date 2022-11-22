@@ -110,16 +110,13 @@ class PostListView(ListView):
         context['posts'] = Post.objects.all()
 
         # 先看一下是不是按标签在搜索的
-        try:
+        if 'tag_slug' in self.kwargs:
             tag_slug = self.kwargs['tag_slug']
-        except Exception as e:
-            print("没找到tag_slug",e)
-            tag_slug = None
-        print("tag_slug:", tag_slug)
-        if tag_slug:
+            print("tag_slug:", tag_slug)
             # 从MyTag对应的数据库表里查询tag
             tag = get_object_or_404(MyTag, slug=tag_slug)
             context['posts'] = context['posts'].filter(tags__in=[tag])
+
 
 
 
@@ -180,6 +177,7 @@ class PostListView(ListView):
                 Q(title__contains=search_by_post_title_body) |
                 Q(body__contains=search_by_post_title_body)
             )
+        print(len(context['posts_page']))
         return context
 
     def post(self, request):  # ***** this method required! ******
