@@ -71,8 +71,6 @@ class PostListView(ListView):
     paginate_by = 3
     template_name = 'blog/post/PostListView.html'
 
-
-
     def get_pagination_data(self, paginator, page_obj, around_count=2):
         left_has_more = False
 
@@ -109,15 +107,27 @@ class PostListView(ListView):
 
         context['posts'] = Post.objects.all()
 
-        # 先看一下是不是按标签在搜索的
-        if 'tag_slug' in self.kwargs:
-            tag_slug = self.kwargs['tag_slug']
+        # 看一下是不是按标签在搜索的
+        tag_slug = self.kwargs.get('tag_slug', None)
+        if tag_slug:
             print("tag_slug:", tag_slug)
             # 从MyTag对应的数据库表里查询tag
             tag = get_object_or_404(MyTag, slug=tag_slug)
             context['posts'] = context['posts'].filter(tags__in=[tag])
 
+        # 看一下是不是get方式query数据
+        submit_query_get = self.request.GET.get('submit_query_get', False)
+        if submit_query_get:
+            print('submit_query_get:', submit_query_get)
 
+        # 快速搜索
+        search_by_post_title_body = self.request.GET.get('search_by_post_title_body', False)
+        if search_by_post_title_body:
+            print("search_by_post_title_body:", search_by_post_title_body)
+            context['posts'] = Post.objects.filter(
+                Q(title__contains=search_by_post_title_body) |
+                Q(body__contains=search_by_post_title_body)
+            )
 
 
         #分页
@@ -137,29 +147,8 @@ class PostListView(ListView):
         context.update(pagination_data)
         context['pages_count'] = paginator.num_pages
 
-        #get方式query数据
-        submit_query_get = self.request.GET.get('submit_query_get',False)
-        if submit_query_get:
-            print('submit_query_get:',submit_query_get)
-            # 料号使用类型筛选:所有,或者对应的查询值
-            query_job_file_usage_type = self.request.GET.get("query_job_file_usage_type", False)
-            context['posts'] = Post.objects.all()
 
-            # 分页
-            page = self.request.GET.get('page')
-            paginator = Paginator(context['jobs'], 3)  # 每页显示3篇文章
-            try:
-                context['posts_page'] = paginator.page(page)
-            except PageNotAnInteger:
-                # 如果page参数不是一个整数就返回第一页
-                context['posts_page'] = paginator.page(1)
-            except EmptyPage:
-                # 如果页数超出总页数就返回最后一页
-                context['posts_page'] = paginator.page(paginator.num_pages)
-            pagination_data = self.get_pagination_data(paginator, context['posts_page'])
-            context.update(pagination_data)
-
-        print("len(context['posts_page']:",len(context['posts']))
+        print("len(context['posts_page']:",len(context['posts_page']))
 
         #文章很多时，要多页显示，但是在修改非首页内容时，比如修改某个文章，这个文章在第3页，如果不记住页数，修改完成后只能重定向到固定页。为了能记住当前页，用了下面的方法。
         if self.request.GET.__contains__("page"):
@@ -169,15 +158,7 @@ class PostListView(ListView):
         else:
             context['current_page'] = 1
 
-        #快速搜索
-        search_by_post_title_body = self.request.GET.get('search_by_post_title_body',False)
-        if search_by_post_title_body:
-            print("search_by_post_title_body:",search_by_post_title_body)
-            context['posts_page'] = Post.objects.filter(
-                Q(title__contains=search_by_post_title_body) |
-                Q(body__contains=search_by_post_title_body)
-            )
-        print(len(context['posts_page']))
+
         return context
 
     def post(self, request):  # ***** this method required! ******
