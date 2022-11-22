@@ -11,7 +11,7 @@
     {% else %}
         <p>请登录：</p>
     {% endif %}
-
+    <body class="login-img3-body">
     <div class="container">
         <form class="login-form" action="{% url 'login' %}" method="post">
             {#            {{ form.as_p }}#}
@@ -31,7 +31,10 @@
                     <span class="pull-right"> <a href="{% url 'password_reset' %}"> 忘记密码？</a></span>
                 </label>
                 <button class="btn btn-primary btn-lg btn-block" type="submit">登录</button>
-{#                <button class="btn btn-info btn-lg btn-block" type="submit">注册</button>#}
+
+                <div>
+                    <a href={% url "register" %}><i class="icon_key_alt"></i> 新用户注册 </a>
+                </div>
             </div>
 
             {% csrf_token %}
@@ -47,6 +50,6 @@
 
 
 
-
+</body>
 
 {% endblock %}

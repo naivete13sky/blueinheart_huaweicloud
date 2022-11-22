@@ -5,8 +5,8 @@ Create an account
 {% endblock %}
 
 {% block content %}
-<h1>Create an account</h1>
-    <p>Please, sign up using the following form：</p>
+<h1>创建一个账户</h1>
+    <p>请注册！</p>
     <form action="." method="post" novalidate>
     {{ user_form.as_p }}
     {% csrf_token %}

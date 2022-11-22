@@ -128,12 +128,14 @@
                                     {% if request.user.username != '' %}
                                         <a href={% url "logout" %}><i class="icon_key_alt"></i> 退出</a>
                                     {% endif %}
-
                                     {% if request.user.username == '' %}
                                         <a href={% url "login" %}><i class="icon_key_alt"></i> 登录</a>
                                     {% endif %}
-
-
+                                </li>
+                                <li>
+                                    {% if request.user.username == '' %}
+                                        <a href={% url "register" %}><i class="icon_key_alt"></i> 注册 </a>
+                                    {% endif %}
                                 </li>
                             </ul>
 
