@@ -9,6 +9,9 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
+import django
+from django.utils.encoding import force_str
+django.utils.encoding.force_text = force_str
 import os
 from pathlib import Path
 
@@ -34,6 +37,7 @@ SITE_ID = 1
 # Application definition
 
 INSTALLED_APPS = [
+    'simpleui',
     'account.apps.AccountConfig',
     #这里将我们的应用放在应用列表的最前边，原因是：我们稍后会为自己的应用编写验证系统的模板，Django内置的验证系统自带了一套模板，
     # 如此设置可以让我们的模板覆盖其他应用中的模板设置。Django按照INSTALLED_APPS中的顺序寻找模板。
@@ -184,3 +188,19 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 CASBIN_MODEL = os.path.join(BASE_DIR, 'casbin.conf')
+
+
+
+
+# <---------------------------------------------------simpleui--------------------------------------------------------->
+# 隐藏simpleui主页信息
+SIMPLEUI_HOME_INFO = False
+
+# 自定义SIMPLEUI的Logo
+# SIMPLEUI_LOGO = 'https://avatars2.githubusercontent.com/u/13655483?s=60&v=4'
+# simpleui修改logo
+# 如果需要使用本地图片，需要在Lib/site-packages/simpleui/static/admin/simpleui-x/img中把原来的logo.png替换掉（图片名称不要改变）。
+
+
+# 设置默认主题
+SIMPLEUI_DEFAULT_THEME = 'admin.lte.css'
