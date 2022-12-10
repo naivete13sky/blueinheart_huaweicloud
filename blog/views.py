@@ -68,7 +68,7 @@ def post_list(request,tag_slug=None):
 class PostListView(ListView):
     queryset = Post.published.all()
     context_object_name = 'posts'
-    paginate_by = 3
+    paginate_by = 10
     template_name = 'blog/post/PostListView.html'
 
     def get_pagination_data(self, paginator, page_obj, around_count=2):
@@ -131,7 +131,7 @@ class PostListView(ListView):
 
         #分页
         page = self.request.GET.get('page')
-        paginator = Paginator(context['posts'], 3)  # 每页显示3篇文章
+        paginator = Paginator(context['posts'], 10)  # 每页显示3篇文章
         print("paginator.num_pages:",paginator.num_pages)
         try:
             context['posts_page'] = paginator.page(page)

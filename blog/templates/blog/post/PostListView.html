@@ -39,13 +39,14 @@
                                     <div class="col-sm-12">
                                         <div class="panel" style="border: ridge">
                                             <div class="panel-header">
-                                                <h3 class="panel-title">
-                                                    <h2>
+                                                <h4 class="panel-title">
+                                                    <h4>
                                                         <a href="{{ post.get_absolute_url }}">
                                                             <h1>{{ post.title }}</h1>
                                                         </a>
-                                                    </h2>
-                                                </h3>
+                                                    </h4>
+                                                </h4>
+
                                                 <h3 class="panel-subtitle">
                                                     <p class="tags">
                                                         <h3>
@@ -59,16 +60,16 @@
 
                                                 </h3>
                                             </div>
-                                            <div class="panel-content">
+{#                                            <div class="panel-content">#}
                                                 {#        {{ post.body|truncatewords:30|linebreaks }}#}
-                                                {{ post.body|markdown|truncatewords_html:20 }}
-
-                                            </div>
-                                            <div class="panel-footer" style=padding-bottom:1px;>
-                                                <p class="date" >
-                                                    {{ post.author }}发表于 {{ post.publish }}
-                                                </p>
-                                            </div>
+{#                                                {{ post.body|markdown|truncatewords_html:20 }}#}
+{##}
+{#                                            </div>#}
+{#                                            <div class="panel-footer" style=padding-bottom:1px;>#}
+{#                                                <p class="date" >#}
+{#                                                    {{ post.author }}发表于 {{ post.publish }}#}
+{#                                                </p>#}
+{#                                            </div>#}
                                         </div>
                                     </div>
                                 </div>
