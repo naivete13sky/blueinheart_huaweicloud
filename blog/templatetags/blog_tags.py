@@ -1,8 +1,9 @@
 from django import template
-from ..models import Post
+from ..models import Post,MyTag,TaggedWhatever
 from django.db.models import Count
 from django.utils.safestring import mark_safe
 import markdown
+
 
 
 
@@ -29,3 +30,17 @@ def get_most_commented_posts(count=5):
 @register.filter(name='markdown')
 def markdown_format(text):
     return mark_safe(markdown.markdown(text))
+
+@register.simple_tag
+def get_tags_count():
+    # result = TaggedWhatever.objects.values('tag_id').order_by('tag_id').annotate(count=Count('tag_id')).order_by('count')
+    result = TaggedWhatever.objects.values('tag_id').annotate(count=Count('tag_id')).order_by('-count')
+    print(result,type(result))
+
+    tag_list=[]
+    for each in result:
+        # print(each["tag_id"],each["count"])
+        tag_one=MyTag.objects.get(id=each["tag_id"])
+        tag_list.append((tag_one.id,tag_one.name,tag_one.slug,each["count"]))
+
+    return tag_list

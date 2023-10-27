@@ -110,7 +110,7 @@ DATABASES = {
         'USER': 'postgres',
         'PASSWORD': 'cc',
         # 'HOST': '10.97.80.118',
-        'HOST': '127.0.0.1',
+        'HOST': '192.168.0.23',
         # 'HOST': '10.97.80.147',
 
         'PORT': '5432',
@@ -154,7 +154,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 
 # 当运行 python manage.py collectstatic 的时候
