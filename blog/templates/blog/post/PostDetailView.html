@@ -63,7 +63,20 @@
 {% endblock %}
 
 
+{% block search %}
+    {% csrf_token %}
+    <script src={% static "javascripts/jquery.min.js" %}></script>
+    <input class="form-control" id="form-control" placeholder="文章名称、内容" type="text" onkeydown="if(event.keyCode==13) {search_by_post_title_body()}">
 
+    <script>
+        function search_by_post_title_body() {           
+            var searchValue = $("#form-control").val(); // 获取表单字段的值
+            var url = "{% url 'blog:PostListView' %}?search_by_post_title_body=" + searchValue;
+            window.location.href = url;
+        }
+    </script>
+
+{% endblock %}
 
 
 {% block main_content %}
