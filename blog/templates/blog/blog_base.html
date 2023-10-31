@@ -4,6 +4,8 @@
 {% block title %}博客{% endblock %}
 {% block header_menu %}
     <a href="{% url "back_stage:index" %}" class="logo"><span class="lite">打开主页</span></a>
+    <a class="logo"><span class="lite">&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</span></a>
+    <a href="{% url "blog:PostListView" %}" class="logo"><span class="lite">博客主页</span></a>
 {% endblock %}
 
 
