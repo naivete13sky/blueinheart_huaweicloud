@@ -140,7 +140,7 @@ dmypy.json
 cython_debug/
 
 
-
+media/
 !/collected_static/echarts-master/dist/
 !/common_static/echarts-master/build/
 !/back_stage/static/echarts-master/dist
