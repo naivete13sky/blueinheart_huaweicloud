@@ -11,7 +11,7 @@ class PostAdmin(admin.ModelAdmin):
     raw_id_fields = ('author',)
     date_hierarchy = 'publish'
     ordering = ('status', 'publish',)
-    list_per_page = 20  # 设置每页显示的行数为 20
+    # list_per_page = 20  # 设置每页显示的行数为 20
 
 
 
@@ -20,6 +20,6 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'post', 'created', 'active')
     list_filter = ('active', 'created', 'updated')
     search_fields = ('name', 'email', 'body')
-    list_per_page = 2  # 设置每页显示的行数为 2
+    # list_per_page = 2  # 设置每页显示的行数为 2
 
 
