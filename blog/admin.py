@@ -20,6 +20,6 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'post', 'created', 'active')
     list_filter = ('active', 'created', 'updated')
     search_fields = ('name', 'email', 'body')
-    list_per_page = 20  # 设置每页显示的行数为 20
+    list_per_page = 2  # 设置每页显示的行数为 2
 
 
